@@ -1,21 +1,57 @@
 /* ----- style.css ----- */
-* {
-    margin: 0;
-    padding: 0;
-  }
+
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap');
+
+
   
-  body {
-    background-color: #01171b;
-  }
-  
-  svg path {
-    fill: #00394f;
-    stroke: #eee;
-    stroke-width: .25;
-  }
-  
-  svg path:hover {
-    fill: #006284;
-    transition: 0.6s;
-    cursor: pointer;
-  }
+    body {
+      background-color: #1D4F58;
+      font-family: 'Bree Serif', serif;
+
+    }
+
+    header{
+      background-color: #184145;
+      margin-top: -20px ;
+      text-align: center;
+      padding: 10px;
+    
+      }
+
+    main{
+        max-width: 1200px;
+        display: grid;
+        
+
+    }
+
+    .map-mexico{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .first-title{
+      color: #64e4f3;
+
+    }
+    
+
+    
+
+
+    svg path {
+      fill: #DADA5E;
+      stroke: #7EAD0E;
+      stroke-width: .95;
+      
+      
+    }
+    
+    svg path:hover {
+      fill: #006284;
+      transition: 0.6s;
+      cursor: pointer;
+    }
+
