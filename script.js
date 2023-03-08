@@ -357,37 +357,104 @@ MxZAC.addEventListener("mouseleave", e =>
 });
 
   
-  let informationSongs = [];
-  async function getInformation(){
-    let url = await fetch('https://api.mocki.io/v2/c9e5d456');
-    let songsArray = await url.json();
-    output(songsArray);
-  };
+  // let informationSongs = [];
+  // async function getInformation(){
+  //   let url = await fetch('https://api.mocki.io/v2/c9e5d456');
+  //   let songsArray = await url.json();
+  //   output(songsArray);
+  // };
 
-  getInformation(informationSongs);
+  // getInformation(informationSongs);
   
-  function output(information) {
-      informationSongs = information;
-        let div = document.getElementById('information-Songs');
-        information.forEach(singer => {
-        let article = document.createElement('article');
-        let h3 = document.createElement('h3');
-        h3.innerHTML = singer.artista;
-        article.appendChild(h3);
-        let h4 = document.createElement('h4');
-        h4.innerHTML = singer.lugarNacimiento;
-        article.appendChild(h4);
-        let h4song = document.createElement('h4');
-        h4song.innerHTML = singer.reproducciones;
-        article.appendChild(h4song);
-        let image = document.createElement('img');
-        image.setAttribute('src', singer.fotoUrl);
-        article.appendChild(image);
-        div.appendChild(article);
+  // function output(information) {
+  //     informationSongs = information;
+  //       let div = document.getElementById('information-Songs');
+  //       information.forEach(singer => {
+  //       let article = document.createElement('article');
+  //       let h3 = document.createElement('h3');
+  //       h3.innerHTML = singer.artista;
+  //       article.appendChild(h3);
+  //       let h4 = document.createElement('h4');
+  //       h4.innerHTML = singer.lugarNacimiento;
+  //       article.appendChild(h4);
+  //       let h4song = document.createElement('h4');
+  //       h4song.innerHTML = singer.reproducciones;
+  //       article.appendChild(h4song);
+  //       let image = document.createElement('img');
+  //       image.setAttribute('src', singer.fotoUrl);
+  //       article.appendChild(image);
+  //       div.appendChild(article);
+  //     });
+  //   };
+
+    const volumeBar = document.querySelector('.volume-bar');
+
+    volumeBar.addEventListener('input', () => {
+      const audioElements = document.getElementsByTagName('audio');
+      const volume = volumeBar.value / 100;
+      for (let i = 0; i < audioElements.length; i++) {
+        audioElements[i].volume = volume;
+      }
+      
+      const fill = document.querySelector('.volume-bar-fill');
+      fill.style.width = `${volumeBar.value}%`;
+    });
+
+
+    const statePaths = document.querySelectorAll('path');
+    let hoverDialog = null;
+    
+    
+    statePaths.forEach((path) => {
+      path.addEventListener('click', async (event) => {
+        
+        const stateClass = path.getAttribute('class');
+        const dialog = document.createElement('div');
+        dialog.innerText = 'Loading...';
+        dialog.id = 'hover-dialog';
+        document.body.appendChild(dialog);
+    
+        dialog.style.top = `${event.pageY - 50}px`;
+        dialog.style.left = `${event.pageX - 50}px`;
+    
+        dialog.style.display = 'block';
+
+        const response = await fetch('https://api.mocki.io/v2/c9e5d456');
+        const data = await response.json();
+    
+        try {
+  
+          const stateInfo = data.find((state) => state.reproducciones === stateClass);
+    
+          if (stateInfo) {
+            dialog.innerHTML = `
+              <h3>${stateInfo.artista}</h3>
+              <img src="${stateInfo.fotoUrl}" alt="${stateInfo.artista}">
+              <p><strong>Canción famosa:</strong> ${stateInfo.cancionFamosa}</p>
+              <p><strong>Reproducciones:</strong> ${stateInfo.reproducciones}</p>
+            `;
+          } else {
+            dialog.innerText = 'No information available for this state.';
+          }
+        } catch (error) {
+          console.error(error);
+          dialog.innerText = 'Error fetching data.';
+        }
+    
+        hoverDialog = dialog;
       });
-    };
-  
-  
-  
-  
-  
+
+
+      document.body.addEventListener('click', async (event) => {
+        statePaths.forEach((path) => {
+          if (hoverDialog !== null || event.target === document.body) {
+            hoverDialog.remove();
+            hoverDialog = null;
+          }
+        });
+      });
+
+    });
+    
+    
+    

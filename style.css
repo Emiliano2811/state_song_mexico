@@ -55,3 +55,26 @@
       cursor: pointer;
     }
 
+
+    #hover-dialog {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      /* add other styles to customize the hover dialog */
+    }
+
+
+    .volume-bar-container{
+      position: absolute;
+      top: 80%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      
+    
+    }
